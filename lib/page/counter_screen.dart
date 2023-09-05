@@ -1,5 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart'; //stf
 
 class CounterScreen extends StatefulWidget {
   const CounterScreen({super.key});
@@ -9,34 +8,78 @@ class CounterScreen extends StatefulWidget {
 }
 
 class _CounterScreenState extends State<CounterScreen> {
+  int contador = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Contador'),
       ),
-      body: const Center(
+      body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              '54',
-              style: TextStyle(
+              '$contador',
+              style: const TextStyle(
                   fontSize: 80,
-                  fontWeight: FontWeight.w200,
-                  color: Colors.cyan),
+                  fontWeight: FontWeight.w800,
+                  color: Colors.indigoAccent),
             ),
-            Text('Numero de Clic'), //hacer mas grande
+            Text(
+              'clic${contador == 1 ? '' : 's'}',
+              style: const TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w800,
+              ),
+            ),
           ],
         ),
       ),
       floatingActionButton:
           Column(mainAxisAlignment: MainAxisAlignment.end, children: [
-        FloatingActionButton(
-          onPressed: () {},
-          child: Icon(Icons.plus_one),
-        )
+        CustomButton(
+          onPressed: () {
+            setState(() {
+              contador++;
+            });
+          },
+          icono: Icons.plus_one_outlined,
+        ),
+        CustomButton(
+          onPressed: () {
+            setState(() {
+              if (contador == 0) return;
+              contador--;
+            });
+          },
+          icono: Icons.exposure_minus_1_rounded,
+        ),
+        CustomButton(
+          onPressed: () {
+            setState(() {
+              contador = 0;
+            });
+          },
+          icono: Icons.refresh_outlined,
+        ),
       ]),
     );
-  } //ahhh
+  }
+}
+
+class CustomButton extends StatelessWidget {
+  final IconData icono;
+  final VoidCallback? onPressed;
+  const CustomButton({super.key, required this.icono, this.onPressed});
+
+  @override
+  Widget build(BuildContext context) {
+    return FloatingActionButton(
+      shape: const StadiumBorder(),
+      onPressed: onPressed,
+      child: Icon(icono),
+    );
+  }
 }
